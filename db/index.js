@@ -2,10 +2,8 @@ const mongoose = require('mongoose');
 const { urlDb } = require('../config');
 
 mongoose.connect(urlDb, {
+    useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: true,
-    useCreateIndex: true,
-    userNewUrlParser: true,
 });
 
 const db = mongoose.connection;
