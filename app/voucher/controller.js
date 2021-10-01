@@ -18,7 +18,12 @@ module.exports = {
             console.log('Voucher >>');
             console.log(voucher);
 
-            res.render('admin/voucher/view_voucher', { voucher, alert });
+            res.render('admin/voucher/view_voucher', {
+                voucher,
+                alert,
+                name: req.session.user.name,
+                title: 'Halaman voucher',
+            });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
             req.flash('alertStatus', 'danger');
@@ -33,6 +38,8 @@ module.exports = {
             res.render('admin/voucher/create', {
                 category,
                 nominal,
+                name: req.session.user.name,
+                title: 'Halaman tambah voucher',
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
@@ -111,7 +118,13 @@ module.exports = {
                 .populate('category')
                 .populate('nominals');
 
-            res.render('admin/voucher/edit', { voucher, category, nominal });
+            res.render('admin/voucher/edit', {
+                voucher,
+                category,
+                nominal,
+                name: req.session.user.name,
+                title: 'Halaman ubah payment',
+            });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
             req.flash('alertStatus', 'danger');

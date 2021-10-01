@@ -10,7 +10,12 @@ module.exports = {
             const alert = { message: alertMessage, status: alertStatus };
             const payment = await Payment.find().populate('banks');
 
-            res.render('admin/payment/view_payment', { payment, alert });
+            res.render('admin/payment/view_payment', {
+                payment,
+                alert,
+                name: req.session.user.name,
+                title: 'Halaman metode pembayaran',
+            });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
             req.flash('alertStatus', 'danger');
@@ -22,6 +27,8 @@ module.exports = {
             const banks = await Bank.find();
             res.render('admin/payment/create', {
                 banks,
+                name: req.session.user.name,
+                title: 'Halaman tambah metode pembayaran',
             });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
@@ -51,7 +58,12 @@ module.exports = {
                 'banks'
             );
             const banks = await Bank.find();
-            res.render('admin/payment/edit', { payment, banks });
+            res.render('admin/payment/edit', {
+                payment,
+                banks,
+                name: req.session.user.name,
+                title: 'Halaman ubah metode pembayaran',
+            });
         } catch (error) {
             req.flash('alertMessage', `${error.message}`);
             req.flash('alertStatus', 'danger');
