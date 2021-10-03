@@ -12,6 +12,7 @@ module.exports = {
             res.render('admin/bank/view_bank', {
                 bank,
                 alert,
+                name: req.session.user.name,
                 title: 'Halaman Bank',
             });
         } catch (error) {
