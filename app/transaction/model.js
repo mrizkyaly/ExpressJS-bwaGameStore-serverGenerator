@@ -71,9 +71,15 @@ let transactionSchema = mongoose.Schema(
             name: { type: String, require: [true, 'nama yang harus di isi'] },
             phoneNumber: {
                 type: Number,
-                require: [true, 'nama harus di isi'],
-                maxlength: [13, 'panjang nama harus antara 9 - 13 karakter'],
-                minlength: [9, 'panjang nama harus antara 9 - 13 karakter'],
+                require: [true, 'nomor telepon  harus di isi'],
+                maxlength: [
+                    13,
+                    'panjang nomor telepon harus antara 9 - 13 karakter',
+                ],
+                minlength: [
+                    9,
+                    'panjang nomor telepon harus antara 9 - 13 karakter',
+                ],
             },
         },
         category: {
