@@ -54,36 +54,37 @@ module.exports = {
         try {
             const { accountUser, name, nominal, voucher, payment, bank } =
                 req.body;
+
             const res_voucher = await Voucher.findOne({ _id: voucher })
-                .select('name category _id thumbnail user')
+                .select('name caegory _id thumbnail user')
                 .populate('category')
                 .populate('user');
 
             if (!res_voucher)
                 return res
                     .status(404)
-                    .json({ message: 'Voucher game tidak ditemukan' });
+                    .json({ message: 'voucher game tidak ditemukan.' });
 
-            const res_nominal = await Nominal.findOne({ id: nominal });
+            const res_nominal = await Nominal.findOne({ _id: nominal });
 
             if (!res_nominal)
                 return res
                     .status(404)
-                    .json({ message: 'Nominal game tidak ditemukan' });
+                    .json({ message: 'nominal tidak ditemukan.' });
 
-            const res_payment = await Payment.findOne({ id: payment });
+            const res_payment = await Payment.findOne({ _id: payment });
 
             if (!res_payment)
                 return res
                     .status(404)
-                    .json({ message: 'Payment game tidak ditemukan' });
+                    .json({ message: 'payment tidak ditemukan.' });
 
-            const res_bank = await Bank.findOne({ id: bank });
+            const res_bank = await Bank.findOne({ _id: bank });
 
             if (!res_bank)
                 return res
                     .status(404)
-                    .json({ message: 'Bank game tidak ditemukan' });
+                    .json({ message: 'payment tidak ditemukan.' });
 
             let tax = (10 / 100) * res_nominal._doc.price;
             let value = res_nominal._doc.price - tax;
@@ -92,7 +93,7 @@ module.exports = {
                 historyVoucherTopup: {
                     gameName: res_voucher._doc.name,
                     category: res_voucher._doc.category
-                        ? res_voucher._doc.category_name
+                        ? res_voucher._doc.category.name
                         : '',
                     thumbnail: res_voucher._doc.thumbnail,
                     coinName: res_nominal._doc.coinName,
@@ -105,6 +106,7 @@ module.exports = {
                     bankName: res_bank._doc.bankName,
                     noRekening: res_bank._doc.noRekening,
                 },
+
                 name: name,
                 accountUser: accountUser,
                 tax: tax,
@@ -115,16 +117,20 @@ module.exports = {
                     phoneNumber: res_voucher._doc.user?.phoneNumber,
                 },
 
-                category: res.voucher._doc.category?._id,
+                category: res_voucher._doc.category?._id,
                 user: res_voucher._doc.user?._id,
             };
-            const transaction = Transaction(payload);
+
+            const transaction = new Transaction(payload);
+
             await transaction.save();
 
-            res.status(201).json({ data: payload });
-        } catch (error) {
+            res.status(201).json({
+                data: transaction,
+            });
+        } catch (err) {
             res.status(500).json({
-                message: error.message || 'Internal Server Error !!',
+                message: err.message || `Internal server error`,
             });
         }
     },
