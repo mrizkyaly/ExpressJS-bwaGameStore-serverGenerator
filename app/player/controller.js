@@ -56,7 +56,7 @@ module.exports = {
                 req.body;
 
             const res_voucher = await Voucher.findOne({ _id: voucher })
-                .select('name caegory _id thumbnail user')
+                .select('name category _id thumbnail user')
                 .populate('category')
                 .populate('user');
 
